@@ -1,14 +1,17 @@
 <!--index.wxml-->
 <view class="main">
   <button bindtap='didPressChooesImage'>上传图片</button>
-  <view class="image-container">
-    <image class="image" src="{{imageObject.imageURL}}" mode="aspectFit"></image>
-  </view>
+  <button bindtap='didPressChooesVideo'>上传视频</button>
 
+  <view class="image-container">
+     <video wx:if="{{mediaType==1}}" src="{{mediaObject.imageURL}}"></video>
+     <image wx:else class="image" src="{{mediaObject.imageURL}}" mode="aspectFit"></image>
+   </view>
   <view class="data">
-    hash: <text>{{imageObject.hash}}\n\n</text>
-    key: <text>{{imageObject.key}}\n\n</text>
-    imageURL: <text>{{imageObject.imageURL}}</text>
+    progress:<text>{{progress}}\n\n</text>
+    hash: <text>{{mediaObject.hash}}\n\n</text>
+    key: <text>{{mediaObject.key}}\n\n</text>
+    URL: <text>{{mediaObject.imageURL}}</text>
   </view>
   <button bindtap='didCancelTask'>取消任务</button>
 </view>

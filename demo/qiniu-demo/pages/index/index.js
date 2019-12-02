@@ -3,67 +3,106 @@ const qiniuUploader = require("../../utils/qiniuUploader");
 
 // 初始化七牛相关参数
 function initQiniu() {
-  var options = {
-    region: 'NCN', // 华北区
-    uptokenURL: https://[yourserver.com]/api/uptoken',
-    // uptoken: 'xxxx=',
-    domain: 'http://[yourBucketId].bkt.clouddn.com',
-    shouldUseQiniuFileName: false
-  };
-  qiniuUploader.init(options);
+    var options = {
+        region: 'ECN', // 华东区
+        //uptokenURL: 'http://node.ijemy.com/get/uptoken',
+        uptoken: 'bjtWBQXrcxgo7HWwlC_bgHg81j352_GhgBGZPeOW:_ePL3nGB7BE526rUaszpLgqS6TM=:eyJzY29wZSI6Ind4YXBwdGVzdCIsImRlYWRsaW5lIjoxNTgyOTY1MzEzfQ==', //2020-02-29 16:35:13
+        domain: 'http://wxapp.qiniu.ijemy.com',
+        shouldUseQiniuFileName: false
+    };
+    qiniuUploader.init(options);
 }
 
 //获取应用实例
 var app = getApp()
 Page({
-  data: {
-    imageObject: {}
-  },
-  //事件处理函数
-  onLoad: function () {
-    console.log('onLoad')
-    var that = this;
-  },
-  didPressChooesImage: function() {
-    var that = this;
-    didPressChooesImage(that);
-  },
+    data: {
+        imageObject: {}
+    },
+    //事件处理函数
+    onLoad: function() {
+        console.log('onLoad')
+        var that = this;
+    },
+    didPressChooesImage: function() {
+        var that = this;
+        didPressChooesImage(that);
+    },
+    didPressChooesVideo: function() {
+        var that = this;
+        didPressChooesVideo(that);
+    },
     didCancelTask: function() {
-      this.data.cancelTask()
+        this.data.cancelTask()
     }
 });
 
+function didPressChooesVideo(that) {
+    initQiniu();
+    that.setData({
+        'mediaType': 1
+    });
+    // 微信 API 选文件
+    wx.chooseVideo({
+        success: function(res) {
+            var filePath = res.tempFilePath;
+            // 交给七牛上传
+            qiniuUploader.upload(filePath, (res) => {
+                    that.setData({
+                        'mediaObject': res
+                    });
+                    console.log('file url is: ' + res.fileUrl)
+                }, (error) => {
+                    console.error('error: ' + JSON.stringify(error));
+                },
+                null, // 可以使用上述参数，或者使用 null 作为参数占位符
+                (progress) => {
+                    that.setData({
+                        'progress': progress.progress,
+                    });
+                    console.log('上传进度', progress.progress)
+                    console.log('已经上传的数据长度', progress.totalBytesSent)
+                    console.log('预期需要上传的数据总长度', progress.totalBytesExpectedToSend)
+                }, cancelTask => that.setData({
+                    cancelTask
+                })
+            );
+        }
+    })
+}
+
 function didPressChooesImage(that) {
-  initQiniu();
-  // 微信 API 选文件
-  wx.chooseImage({
-      count: 1,
-      success: function (res) {
-        var filePath = res.tempFilePaths[0];
-        // 交给七牛上传
-        qiniuUploader.upload(filePath, (res) => {
-          that.setData({
-            'imageObject': res
-          });
-          console.log('file url is: ' + res.fileUrl)
-        }, (error) => {
-          console.error('error: ' + JSON.stringify(error));
-        },
-        // , {
-        //     region: 'NCN', // 华北区
-        //     uptokenURL: 'https://[yourserver.com]/api/uptoken',
-        //     domain: 'http://[yourBucketId].bkt.clouddn.com',
-        //     shouldUseQiniuFileName: false
-        //     key: 'testKeyNameLSAKDKASJDHKAS'
-        //     uptokenURL: 'myServer.com/api/uptoken'
-        // }
-        null,// 可以使用上述参数，或者使用 null 作为参数占位符
-        (progress) => {
-          console.log('上传进度', progress.progress)
-            console.log('已经上传的数据长度', progress.totalBytesSent)
-            console.log('预期需要上传的数据总长度', progress.totalBytesExpectedToSend)
-        }, cancelTask => that.setData({cancelTask})
-        );
-      }
+    initQiniu();
+    that.setData({
+        'mediaType': 0
+    });
+    // 微信 API 选文件
+    wx.chooseImage({
+        count: 1,
+        success: function(res) {
+            var filePath = res.tempFilePaths[0];
+            // 交给七牛上传
+            qiniuUploader.upload(filePath, (res) => {
+                    that.setData({
+                        'mediaObject': res
+                    });
+                    console.log(JSON.stringify(res));
+                    console.log('file url is: ' + res.fileUrl)
+                }, (error) => {
+                    console.error('error: ' + JSON.stringify(error));
+                },
+                null, // 可以使用上述参数，或者使用 null 作为参数占位符
+                (progress) => {
+                    that.setData({
+                        'progress': progress.progress,
+                    });
+                    console.log('上传进度', progress.progress)
+                    console.log('已经上传的数据长度', progress.totalBytesSent)
+                    console.log('预期需要上传的数据总长度', progress.totalBytesExpectedToSend)
+                }, cancelTask => that.setData({
+                    cancelTask
+                })
+            );
+        }
     })
 }
