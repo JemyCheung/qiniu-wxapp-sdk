@@ -4,6 +4,7 @@ const qiniuUploader = require("../../utils/qiniuUploader");
 // 初始化七牛相关参数
 function initQiniu() {
     var options = {
+        qiniuRetryDomainNum: 1, //上传重试策略，=0:不重试,=1:重试一个域名三次,=2:重试两个域名各三次
         region: 'ECN', // 华东区
         //uptokenURL: 'http://node.ijemy.com/get/uptoken',
         uptoken: 'bjtWBQXrcxgo7HWwlC_bgHg81j352_GhgBGZPeOW:_ePL3nGB7BE526rUaszpLgqS6TM=:eyJzY29wZSI6Ind4YXBwdGVzdCIsImRlYWRsaW5lIjoxNTgyOTY1MzEzfQ==', //2020-02-29 16:35:13

@@ -33,8 +33,8 @@
     }
 
     function updateConfigWithOptions(options) {
-        if (qiniuRetryDomainNum > 2 || qiniuRetryDomainNum < 0) {
-            qiniuRetryDomainNum = 2;
+        if (options.qiniuRetryDomainNum > 2 || options.qiniuRetryDomainNum < 0) {
+            config.qiniuRetryDomainNum = 2;
         }
         if (options.region) {
             config.qiniuRegion = options.region;
