@@ -15,9 +15,8 @@ Qiniu-wxapp-SDK
 
 ### 最近一次修改：
 
-* 更换了七牛的新域名 `*.qiniup.com`
-* 更正了 sdk 内部 fileUrl 的命名
-* `res` 添加新字段 `fileUrl`，内容和 `imageUrl` 一样，但是语义更明确，且不仅限于图片了。
+* 更新上传加速域名
+* 增加上传重试策略
 
 ### 概述
 
@@ -70,7 +69,7 @@ Qiniu-wxapp-SDK  为客户端 SDK，没有包含 token 生成实现，为了安
 | 字段名             | 内容                             |
 | --------------- | ------------------------------ |
 | request 域名      | https://yourServce.com         |
-| uploadFile 域名   | https://up.qiniup.com （根据存储区域填写）  |
+| uploadFile 域名   | https://upload.qiniup.com （根据存储区域填写）  |
 | downloadFile 域名 | https://baldkf.bkt.clouddn.com |
 
 <a id="region"></a>
@@ -85,19 +84,19 @@ Qiniu-wxapp-SDK  为客户端 SDK，没有包含 token 生成实现，为了安
 | 北美     | NA       | https://up-na0.qiniup.com |
 | 新加坡   | ASG      | https://up-as0.qiniup.com |
 
-**注意!!** 目前微信限制每月只能修改三次域名白名单。
+**注意!!** 目前微信限制每月只能修改五次域名白名单。
 
 <a id="usage"></a>
 ### 安装
 
 暂时支持一种安装方式
 
-- 通过 Github 上的 gpake/qiniu-wxapp-sdk 仓库获取
+- 通过 Github 上的 JemyCheung/qiniu-wxapp-sdk 仓库获取
 
 直接克隆仓库
 
 ```
-git clone https://github.com/gpake/qiniu-wxapp-sdk.git
+git clone https://github.com/JemyCheung/qiniu-wxapp-sdk.git
 ```
 
 qiniuUploader.js 文件在 sdk 目录。
@@ -298,7 +297,7 @@ qiniuUploader.upload(wxappFilePath, [succeedCallback, [failedCallback, [options,
 
 1. 登录 https://github.com
 
-2. Fork `git@github.com:gpake/qiniu-wxapp-sdk.git`
+2. Fork `git@github.com:JemyCheung/qiniu-wxapp-sdk.git`
 
 3. 创建您的特性分支 (git checkout -b new-feature)
 
